@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:pr2/common/database_request.dart';
 import 'package:pr2/domain/entity/role.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common/sql.dart' as sqflite_common;
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../../data/model/role.dart';
 import '../../data/model/user.dart';
@@ -25,7 +25,12 @@ class DatabaseHelper {
     _pathDB = join(_appDocumentDirectory.path, 'VeloShopDB.db');
 
     if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-      //TODO:Строка подключеняи к бд
+
+      sqfliteFfiInit();
+      database = await databaseFactoryFfi.openDatabase(_pathDB,
+          options: OpenDatabaseOptions(
+              version: _version, onCreate: (db, version) {}));
+
     } else {
       database = await openDatabase(_pathDB,
           version: _version, onCreate: (db, version) {});
@@ -38,28 +43,28 @@ class DatabaseHelper {
     }
   }
 
-  Future<void> onInitTable(Database db) async{
-    try{
-
-      for(var element in RoleEnum.values){
-        db.insert(DatabaseRequest.tableRole, Role(role:element.name).toMap());
+  Future<void> onInitTable(Database db) async {
+    try {
+      for (var element in RoleEnum.values) {
+        db.insert(DatabaseRequest.tableRole, Role(role: element.name).toMap());
       }
 
-      db.insert(DatabaseRequest.tableUsers, User(
-        login: 'admin',
-        password: 'admin',
-        idRole: RoleEnum.admin,
-      ).toMap());
-
-    } on DatabaseException catch (error){
+      db.insert(
+          DatabaseRequest.tableUsers,
+          User(
+            login: 'admin',
+            password: 'admin',
+            idRole: RoleEnum.admin,
+          ).toMap());
+    } on DatabaseException catch (error) {
       print(error.result);
     }
   }
 
   Future<void> onUpdateTable(Database db) async {
     var tables = await db.rawQuery('Select name from sqlite_master');
-    for(var table in DatabaseRequest.tableList.reversed){
-      if(tables.where((element) => element['name'] == table).isNotEmpty){
+    for (var table in DatabaseRequest.tableList.reversed) {
+      if (tables.where((element) => element['name'] == table).isNotEmpty) {
         await db.execute(DatabaseRequest.deleteTable(table));
       }
     }
@@ -67,11 +72,12 @@ class DatabaseHelper {
     await onCreateTable(db);
   }
 
-  Future<void> onDropDatabase() async{
+  Future<void> onDropDatabase() async {
     database.close();
 
     if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-      //TODO:Строка удаления бд
+      sqfliteFfiInit();
+      databaseFactoryFfi.deleteDatabase(_pathDB);
     } else {
       deleteDatabase(_pathDB);
     }
