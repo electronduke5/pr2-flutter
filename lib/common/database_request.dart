@@ -2,7 +2,8 @@ abstract class DatabaseRequest{
   static const String tableRole = 'role';
   static const String tableUsers = 'user';
   static const String tableCategory = 'category';
-  //TODO: Еще 6 таблиц
+  static const String tableProduct = 'product';
+  //TODO: Еще 5 таблиц
 
   static String deleteTable(String table) => 'DROP TABLE $table';
 
@@ -10,12 +11,14 @@ abstract class DatabaseRequest{
     tableRole,
     tableUsers,
     tableCategory,
+    tableProduct,
   ];
 
   static const List<String> tableCreateList = [
     _createTableRole,
     _createTableUsers,
     _createTableCategory,
+    _createTableProduct,
   ];
 
   /// Запрос для создания таблицы Role
@@ -29,4 +32,17 @@ abstract class DatabaseRequest{
   /// Запрос для создания таблицы Category
   static const String _createTableCategory =
       'CREATE TABLE "$tableRole" ("id" INTEGER,"category" TEXT NOT NULL UNIQUE, PRIMARY KEY("id" AUTOINCREMENT))';
+
+  /// Запрос для создания таблицы Users
+  static const String _createTableProduct =
+      'CREATE TABLE "$tableProduct" ('
+      '"id"	INTEGER,'
+      '"brand"	TEXT NOT NULL, '
+      '"model"	TEXT NOT NULL, '
+      '"color"	TEXT NOT NULL, '
+      '"count_of_speed"	INTEGER NOT NULL, '
+      '"wheel_diameter"	INTEGER NOT NULL, '
+      '"year_of_release" INTEGER NOT NULL, '
+      '"id_category"	INTEGER,'
+      'FOREIGN KEY("id_category") REFERENCES "Category"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT) )';
 }
