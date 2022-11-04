@@ -8,6 +8,7 @@ class ProductEntity {
   final int wheelDiameter;
   final int yearOfRelease;
   final int countOfSpeed;
+  final int price;
   final CategoryEnum idCategory;
 
   ProductEntity(
@@ -17,6 +18,7 @@ class ProductEntity {
       required this.color,
       required this.wheelDiameter,
       required this.yearOfRelease,
+      required this.price,
       this.countOfSpeed = 1,
       required this.idCategory});
 }
