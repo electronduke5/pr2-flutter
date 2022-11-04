@@ -10,6 +10,7 @@ class Product extends ProductEntity {
       required super.price,
       super.countOfSpeed,
       required super.wheelDiameter,
+      required super.idProvider,
       required super.yearOfRelease,
       required super.idCategory});
 
@@ -20,9 +21,10 @@ class Product extends ProductEntity {
       'color': color,
       'price': price,
       'count_of_speed': countOfSpeed,
+      'id_provider': idProvider,
       'wheel_diameter': wheelDiameter,
       'year_of_release': yearOfRelease,
-      'id_category': idCategory,
+      'id_category': idCategory.id,
     };
   }
 
@@ -33,6 +35,7 @@ class Product extends ProductEntity {
         model: json['model'],
         color: json['color'],
         price: json['price'] as int,
+        idProvider: json['id_provider'] as int,
         countOfSpeed: json['count_of_speed'] as int,
         wheelDiameter: json['wheel_diameter'] as int,
         yearOfRelease: json['year_of_release'] as int,

@@ -4,7 +4,10 @@ abstract class DatabaseRequest{
   static const String tableCategory = 'category';
   static const String tableProduct = 'product';
   static const String tableCart = 'cart';
-  //TODO: Еще 5 таблиц
+  static const String tableStatus = 'status';
+  static const String tableOrder = 'order';
+  static const String tableItemOrder = 'item_order';
+  static const String tableProvider = 'provider';
 
   static String deleteTable(String table) => 'DROP TABLE $table';
 
@@ -12,16 +15,24 @@ abstract class DatabaseRequest{
     tableRole,
     tableUsers,
     tableCategory,
+    tableProvider,
     tableProduct,
     tableCart,
+    tableStatus,
+    tableOrder,
+    tableItemOrder,
   ];
 
   static const List<String> tableCreateList = [
     _createTableRole,
     _createTableUsers,
     _createTableCategory,
+    _createTableProvider,
     _createTableProduct,
     _createTableCart,
+    _createTableStatus,
+    _createTableOrder,
+    _createTableItemOrder,
   ];
 
   /// Запрос для создания таблицы Role
@@ -47,6 +58,8 @@ abstract class DatabaseRequest{
       '"count_of_speed"	INTEGER NOT NULL, '
       '"wheel_diameter"	INTEGER NOT NULL, '
       '"year_of_release" INTEGER NOT NULL, '
+      '"id_provider" INTEGER,'
+      'FOREIGN KEY("id_provider") REFERENCES "Provider"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT),'
       '"id_category"	INTEGER,'
       'FOREIGN KEY("id_category") REFERENCES "Category"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT) )';
 
@@ -56,7 +69,31 @@ abstract class DatabaseRequest{
       '"id"	INTEGER,'
       '"count"	INTEGER NOT NULL,'
       '"id_user" INTEGER,'
-      'FOREIGN KEY("id_user") REFERENCES "User"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT)'
+      'FOREIGN KEY("id_user") REFERENCES "User"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT),'
       '"id_product" INTEGER,'
       'FOREIGN KEY("id_product") REFERENCES "Product"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT) )';
+
+  static const String _createTableStatus =
+      'CREATE TABLE "$tableStatus" ("id" INTEGER,"status" TEXT NOT NULL UNIQUE, PRIMARY KEY("id" AUTOINCREMENT))';
+
+  static const String _createTableOrder =
+      'CREATE TABLE "$tableOrder" ('
+      '"id"	INTEGER,'
+      '"date_order"	TEXT NOT NULL,'
+      '"id_user" INTEGER,'
+      'FOREIGN KEY("id_user") REFERENCES "User"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT),'
+      '"id_status" INTEGER,'
+      'FOREIGN KEY("id_status") REFERENCES "Status"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT) )';
+
+  static const String _createTableItemOrder =
+      'CREATE TABLE "$tableItemOrder" ('
+      '"id"	INTEGER,'
+      '"count" INTEGER NOT NULL,'
+      '"id_order" INTEGER,'
+      'FOREIGN KEY("id_order") REFERENCES "Order"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT),'
+      '"id_product" INTEGER,'
+      'FOREIGN KEY("id_product") REFERENCES "Product"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT) )';
+
+  static const String _createTableProvider =
+      'CREATE TABLE "$tableProvider" ("id"	INTEGER,"name"	TEXT NOT NULL, PRIMARY KEY("id" AUTOINCREMENT) )';
 }
