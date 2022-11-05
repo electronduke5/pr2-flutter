@@ -3,7 +3,11 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:pr2/common/database_request.dart';
+import 'package:pr2/data/model/category.dart';
+import 'package:pr2/data/model/status.dart';
+import 'package:pr2/domain/entity/category.dart';
 import 'package:pr2/domain/entity/role.dart';
+import 'package:pr2/domain/entity/status.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -44,12 +48,21 @@ class DatabaseHelper {
     for (var tableCreateString in DatabaseRequest.tableCreateList) {
       await db.execute(tableCreateString);
     }
+    await onInitTable(db);
   }
 
   Future<void> onInitTable(Database db) async {
     try {
-      for (var element in RoleEnum.values) {
-        db.insert(DatabaseRequest.tableRole, Role(role: element.name).toMap());
+      for (var role in RoleEnum.values) {
+        db.insert(DatabaseRequest.tableRole, Role(role: role.name).toMap());
+      }
+
+      for(var status in StatusEnum.values){
+        db.insert(DatabaseRequest.tableStatus, Status(status: status.name).toMap());
+      }
+
+      for(var category in CategoryEnum.values){
+        db.insert(DatabaseRequest.tableCategory, Category(category: category.name).toMap());
       }
 
       db.insert(
