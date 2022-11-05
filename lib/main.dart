@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pr2/core/db/database_helper.dart';
 
 void main() {
-  runApp( const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  DatabaseHelper().init();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -9,7 +12,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return MaterialApp(
+      home: Column(
+        children: [
+          Container(
+            color: Colors.amber,
+            height: 20,
+          ),
+          Container(
+            child: ElevatedButton(
+              onPressed: () {},
+              child: const Text("init"),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

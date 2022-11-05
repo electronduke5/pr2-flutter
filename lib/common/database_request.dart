@@ -59,9 +59,10 @@ abstract class DatabaseRequest{
       '"wheel_diameter"	INTEGER NOT NULL, '
       '"year_of_release" INTEGER NOT NULL, '
       '"id_provider" INTEGER,'
-      'FOREIGN KEY("id_provider") REFERENCES "Provider"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT),'
       '"id_category"	INTEGER,'
-      'FOREIGN KEY("id_category") REFERENCES "Category"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT) )';
+      'FOREIGN KEY("id_provider") REFERENCES "Provider"("id") ON DELETE CASCADE,'
+      'FOREIGN KEY("id_category") REFERENCES "Category"("id") ON DELETE CASCADE,'
+      'PRIMARY KEY("id" AUTOINCREMENT) )';
 
   /// Запрос для создания таблицы Product
   static const String _createTableCart =
@@ -69,31 +70,38 @@ abstract class DatabaseRequest{
       '"id"	INTEGER,'
       '"count"	INTEGER NOT NULL,'
       '"id_user" INTEGER,'
-      'FOREIGN KEY("id_user") REFERENCES "User"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT),'
       '"id_product" INTEGER,'
-      'FOREIGN KEY("id_product") REFERENCES "Product"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT) )';
+      'FOREIGN KEY("id_user") REFERENCES "User"("id") ON DELETE CASCADE,'
+      'FOREIGN KEY("id_product") REFERENCES "Product"("id") ON DELETE CASCADE,'
+      'PRIMARY KEY("id" AUTOINCREMENT) )';
 
+  /// Запрос для создания таблицы Status
   static const String _createTableStatus =
       'CREATE TABLE "$tableStatus" ("id" INTEGER,"status" TEXT NOT NULL UNIQUE, PRIMARY KEY("id" AUTOINCREMENT))';
 
+  /// Запрос для создания таблицы Order
   static const String _createTableOrder =
       'CREATE TABLE "$tableOrder" ('
       '"id"	INTEGER,'
       '"date_order"	TEXT NOT NULL,'
       '"id_user" INTEGER,'
-      'FOREIGN KEY("id_user") REFERENCES "User"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT),'
       '"id_status" INTEGER,'
-      'FOREIGN KEY("id_status") REFERENCES "Status"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT) )';
+      'FOREIGN KEY("id_user") REFERENCES "User"("id") ON DELETE CASCADE,'
+      'FOREIGN KEY("id_status") REFERENCES "Status"("id") ON DELETE CASCADE,'
+      'PRIMARY KEY("id" AUTOINCREMENT) )';
 
+  /// Запрос для создания таблицы ItemOrder
   static const String _createTableItemOrder =
       'CREATE TABLE "$tableItemOrder" ('
       '"id"	INTEGER,'
       '"count" INTEGER NOT NULL,'
       '"id_order" INTEGER,'
-      'FOREIGN KEY("id_order") REFERENCES "Order"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT),'
       '"id_product" INTEGER,'
-      'FOREIGN KEY("id_product") REFERENCES "Product"("id") ON DELETE CASCADE,PRIMARY KEY("id" AUTOINCREMENT) )';
+      'FOREIGN KEY("id_order") REFERENCES "Order"("id") ON DELETE CASCADE,'
+      'FOREIGN KEY("id_product") REFERENCES "Product"("id") ON DELETE CASCADE,'
+      'PRIMARY KEY("id" AUTOINCREMENT) )';
 
+  /// Запрос для создания таблицы Provider
   static const String _createTableProvider =
       'CREATE TABLE "$tableProvider" ("id"	INTEGER,"name"	TEXT NOT NULL, PRIMARY KEY("id" AUTOINCREMENT) )';
 }

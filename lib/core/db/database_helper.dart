@@ -13,6 +13,8 @@ import '../../data/model/user.dart';
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._instance();
 
+  factory DatabaseHelper() => instance;
+
   DatabaseHelper._instance();
 
   final int _version = 1;
@@ -21,19 +23,20 @@ class DatabaseHelper {
   late final Database database;
 
   Future<void> init() async {
-    _appDocumentDirectory = await path_provider.getApplicationDocumentsDirectory();
+    _appDocumentDirectory =
+        await path_provider.getApplicationDocumentsDirectory();
     _pathDB = join(_appDocumentDirectory.path, 'VeloShopDB.db');
 
     if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-
       sqfliteFfiInit();
       database = await databaseFactoryFfi.openDatabase(_pathDB,
           options: OpenDatabaseOptions(
-              version: _version, onCreate: (db, version) {}));
-
+              version: _version, onCreate: (db, version) => onCreateTable(db)));
     } else {
-      database = await openDatabase(_pathDB,
-          version: _version, onCreate: (db, version) {});
+      database = await openDatabase(_pathDB, version: _version,
+          onCreate: (db, version) {
+        onCreateTable(db);
+      });
     }
   }
 
