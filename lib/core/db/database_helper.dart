@@ -35,12 +35,17 @@ class DatabaseHelper {
       sqfliteFfiInit();
       database = await databaseFactoryFfi.openDatabase(_pathDB,
           options: OpenDatabaseOptions(
-              version: _version, onCreate: (db, version) => onCreateTable(db)));
+            version: _version,
+            onCreate: (db, version) => onCreateTable(db),
+            onUpgrade: (db, oldVersion, newVersion) => onUpdateTable(db),
+          ));
     } else {
-      database = await openDatabase(_pathDB, version: _version,
-          onCreate: (db, version) {
-        onCreateTable(db);
-      });
+      database = await openDatabase(
+        _pathDB,
+        version: _version,
+        onCreate: (db, version) => onCreateTable(db),
+        onUpgrade: (db, oldVersion, newVersion) => onUpdateTable(db),
+      );
     }
   }
 
@@ -57,12 +62,14 @@ class DatabaseHelper {
         db.insert(DatabaseRequest.tableRole, Role(role: role.name).toMap());
       }
 
-      for(var status in StatusEnum.values){
-        db.insert(DatabaseRequest.tableStatus, Status(status: status.name).toMap());
+      for (var status in StatusEnum.values) {
+        db.insert(
+            DatabaseRequest.tableStatus, Status(status: status.name).toMap());
       }
 
-      for(var category in CategoryEnum.values){
-        db.insert(DatabaseRequest.tableCategory, Category(category: category.name).toMap());
+      for (var category in CategoryEnum.values) {
+        db.insert(DatabaseRequest.tableCategory,
+            Category(category: category.name).toMap());
       }
 
       db.insert(
