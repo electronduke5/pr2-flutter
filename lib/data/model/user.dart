@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:pr2/domain/entity/role.dart';
 
 import '../../domain/entity/user.dart';
@@ -14,7 +17,7 @@ class User extends UserEntity{
   Map<String, dynamic> toMap(){
     return{
       'login' : login,
-      'password' : password,
+      'password' : sha1.convert(utf8.encode(password)).toString(),
       'id_role' : idRole.id,
     };
   }

@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypto/crypto.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:pr2/common/database_request.dart';
@@ -75,8 +77,8 @@ class DatabaseHelper {
       db.insert(
           DatabaseRequest.tableUsers,
           User(
-            login: 'admin',
-            password: 'admin',
+            login: 'admin1',
+            password: sha1.convert(utf8.encode('admin')).toString(),
             idRole: RoleEnum.admin,
           ).toMap());
     } on DatabaseException catch (error) {

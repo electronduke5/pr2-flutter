@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pr2/core/db/database_helper.dart';
+import 'package:pr2/presentation/pages/admin_page.dart';
+import 'package:pr2/presentation/pages/auth/sign_in_page.dart';
+import 'package:pr2/presentation/pages/auth/sign_up_page.dart';
+import 'package:pr2/presentation/pages/user_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,21 +16,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Column(
-        children: [
-          Container(
-            color: Colors.amber,
-            height: 20,
-          ),
-          Container(
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Text("init"),
-            ),
-          ),
-        ],
-      ),
+    return  MaterialApp(
+      home: const SignInPage(),
+      routes: {
+        "/AdminPage" : (context) => const AdminPage(),
+        "/UserPage" : (context) => const UserPage(),
+        "/SignUpPage" : (context) => const SignUpPage(),
+        "/SignInPage" : (context) => const SignInPage(),
+      },
     );
   }
 }

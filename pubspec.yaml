@@ -39,6 +39,10 @@ dependencies:
   sqflite: ^2.2.0+2
   path_provider: ^2.0.11
   sqflite_common_ffi: ^2.2.0+1
+  dartz: ^0.10.1
+  crypto: ^3.0.2
+  flutter_svg: ^1.1.1
+  google_fonts: ^3.0.1
 
 dev_dependencies:
   flutter_test:
